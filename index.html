@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+
+  	<form>
+		<input name="name" value="Nikita">
+		<input name="age" value="21">
+		<input type="submit"> 
+	</form>
+
+	<ul class="listMessages">
+		
+	</ul>
+
+	<script>
+		
+		const form = document.querySelector('form')
+		form.addEventListener('submit', submitHandler)
+
+
+		function submitHandler(e) {
+  			e.preventDefault();
+
+			const xhr2 = new XMLHttpRequest();
+
+			xhr2.open("POST", '/hello', true);
+			xhr2.setRequestHeader('Content-Type', 'application/json');
+			const name = this.querySelector('[name="name"]');
+  			const age = this.querySelector('[name="age"]');
+
+			xhr2.onreadystatechange = () => { 
+	  			if (xhr2.readyState != 4) return;
+
+	  			if (xhr2.status != 200) {
+	    			console.log(xhr2.status + ': ' + xhr2.statusText);
+	  			} else {
+	    			console.log(xhr2.responseText);
+	    			let listContainer = document.querySelector('.listMessages');
+					let createLi = document.createElement("li");
+					createLi.innerHTML = xhr2.responseText;
+	    			listContainer.appendChild(createLi);
+	  			}
+			}
+
+			xhr2.send(JSON.stringify({name: name.value, age: age.value})); 
+		}
+
+	</script>
+
+  </body>
+</html>
